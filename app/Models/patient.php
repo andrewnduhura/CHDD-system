@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model
+class patient extends Model
 {
     use HasFactory;
-    //incase theres another table. its the only one to be displayed
-    public $table = "users";
+    protected $fillable = ['name', 'created_at'];
 }
+ 
