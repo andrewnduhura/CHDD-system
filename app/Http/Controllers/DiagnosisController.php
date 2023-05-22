@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 // use Illuminate\Support\Fascade\Http;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
@@ -60,6 +61,8 @@ class DiagnosisController extends Controller
 
         // return 'Diagnosis => '. $diagnosis;
         return 'Diagnosis => '. $diagnosis[0];
+        
+
 
 
                 
@@ -217,7 +220,7 @@ function index3(){
         }
     }   
 }
-function index4(){
+function index4(Request $request){
     // Set the API endpoint URL
     $url = 'http://localhost:1234/';
 
@@ -241,6 +244,7 @@ function index4(){
         'KidneyDisease' => 'NO',
         'SkinCancer' => 'Yes'
     ];
+    // $request->session()->put('formData', $data);
 
     // Encode the data as JSON
     $json_data = json_encode(['input' => $data]);
@@ -260,7 +264,6 @@ function index4(){
 
     // Get the response data as an associative array
     $response_data = json_decode($response->getBody(), true);
-
     // Print the response data
     // var_dump($response_data);
     
@@ -270,12 +273,22 @@ function index4(){
     } else {
         // Otherwise, check the diagnosis value
         $diagnosis = $response_data['diagnosis'];
+        $formData = $data;
         if (is_array($diagnosis)) {
             // If the diagnosis is an array, print each value
-            return 'Diagnosis: ' . implode(', ', $diagnosis);
-        } else {
+            // return 'Diagnosis: ' . implode(', ', $diagnosis);
+            $formData['diagnosis'] = implode(', ', $diagnosis);
+            Session::put('formData', $formData);
+            // return view('patients')->with('diagnosis', 'Diagnosis => ' . implode(', ', $diagnosis));
+            return redirect()->route('form.showB');
+            
+        } else{
             // Otherwise, print the single value
-            return 'Diagnosis: ' . $diagnosis;
+            // return 'Diagnosis: ' . $diagnosis;
+            // return view('patients')->with('diagnosis', 'Diagnosis => ' . $diagnosis);
+            $formData['diagnosis'] = $diagnosis;
+            Session::put('formData', $formData);
+            return redirect()->route('form.showB');
         }
     }   
 }
