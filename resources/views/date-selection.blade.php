@@ -1,13 +1,37 @@
-<!-- resources/views/date-selection.blade.php -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Date Selection and Graph Display</title>
+    
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+</head>
+<body>
 
-<form method="get" action="{{ route('dates') }}">
+<div>
+<h1>Date Selection</h1>
+
+<form id="date-form" method="POST" action="{{ route('dates.submit')  }}">
+
     @csrf
 
-    <label for="start-date">Start Date:</label>
-    <input type="date" id="start-date" name="start_date" required>
+    <label for="startdate">Start Date:</label>
+    <input type="date" id="startdate" name="start_date" required>
 
-    <label for="end-date">End Date:</label>
-    <input type="date" id="end-date" name="end_date" required>
+    <label for="enddate">End Date:</label>
+    <input type="date" id="enddate" name="end_date" required>
 
     <button type="submit">Generate Graph</button>
 </form>
+</div>
+
+
+
+
+
+</body>
+</html>
+
+            
+        
+
+

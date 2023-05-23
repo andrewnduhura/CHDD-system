@@ -12,6 +12,7 @@ use App\Http\Controllers\MemberrsController;
 //use App\Http\Controllers\PatientsController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\DateController;
+use App\Http\Controllers\GraphController;
 
 /*
 |--------------------------------------------------------------------------
@@ -102,16 +103,21 @@ Route::get('pie',[AdminController::class, 'pieChart']);
 
 // routes/web.php
 
-Route::get('graphs', 'PatientGraphController@index')->name('patient.graphs');
+//Route::get('graphs', 'PatientGraphController@index')->name('patient.graphs');
 
 // routes/web.php
 
-Route::post('graphs', 'PatientGraphController@show')->name('patient.graphs.show');
+//Route::post('graphs', 'PatientGraphController@show')->name('patient.graphs.show');
 
 //Dates Form
 //Route::view("dates","date-selection");
 
-Route::get('dates', [DateController::class,'graph']);
-Route::get('dates', [DateController::class,'showPatientCount']);
+//Route::get('dates', [DateController::class,'graph']);
+//Route::match(['GET','POST'],'dates', [DateController::class,'showPatientCount'])->name('fetch-graph-data');
+//Route::post('graph', [DateController::class,'fetchGraphData'])->name('fetch-graph-data');
 //->name('dates')
+
+Route::get('dates', [DateController::class, 'graph'])->name('dates.form');
+Route::post('dates/submit', [DateController::class, 'showPatientCount'])->name('dates.submit');
+Route::get('dates/graph', [DateController::class, 'generateGraph'])->name('dates.graph');
 

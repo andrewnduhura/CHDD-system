@@ -1,11 +1,13 @@
 
 <div>
-    <canvas id="patient-count-chart"></canvas>
+    
+    <canvas id="patient-count-chart" width="150" height="100"></canvas>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 var dates = {!! $dates !!};
 var counts = {!! $counts !!};
+var csrfToken = "{{ csrf_token() }}";
 
 new Chart(document.getElementById('patient-count-chart'), {
     type: 'bar',
@@ -48,6 +50,8 @@ new Chart(document.getElementById('patient-count-chart'), {
         },
     }
 });
+
+
 </script>
 
 
