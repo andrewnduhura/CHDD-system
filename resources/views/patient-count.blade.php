@@ -1,20 +1,21 @@
 
-<div>
+<div style="width:50%;height:10px;">
     
-    <canvas id="patient-count-chart" width="150" height="100"></canvas>
+    <canvas id="patient-count-chart" width="400" height="400"></canvas>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 var dates = {!! $dates !!};
 var counts = {!! $counts !!};
 var csrfToken = "{{ csrf_token() }}";
+//var location = "{!! $location !!}";
 
 new Chart(document.getElementById('patient-count-chart'), {
     type: 'bar',
     data: {
         labels: dates,
         datasets: [{
-            label: 'Number of patients',
+            label: 'Number of patients ',
             data: counts,
             borderColor: '',
             fill: true,
@@ -45,6 +46,12 @@ new Chart(document.getElementById('patient-count-chart'), {
                 }
             }]
         },
+        plugins: {
+                title: {
+                    display: true,
+                    text: 'Number of patients ',
+                }
+            },
         legend: {
             display: false,
         },
