@@ -26,7 +26,8 @@ Route::get('/diagnosis', function () {
     return view('admin');
 });
 
-Route::get('/diagnose',[DiagnosisController::class, 'index4']);
+// Route::get('/diagnose',[DiagnosisController::class, 'index4']);
+Route::get('/diagnose',[DiagnosisController::class, 'index5']);
 // Route::get('/form-b', [PatientController::class,'index']);
 Route::get('/form-b', [PatientController::class, 'index'])->name('form.showB');
 // Route::get('/form-b', 'PatientController@index')->name('form.showB');

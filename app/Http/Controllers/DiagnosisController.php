@@ -355,5 +355,108 @@ public function predict(Request $request)
     
 }
 
+public function index5(Request $request)
+{
+    // Set the API endpoint URL
+    $url = 'http://localhost:5000/predict';
+
+    // Get the form data from the request
+    $formData = $request->all();
+    $formData['Diabetic'] = $formData['Diabetic'];
+    // dd($formData['Diabetic']);
+    // Convert non-string values to correct data types
+    $formData['BMI'] = floatval($formData['BMI']);
+    $formData['PhysicalHealth'] = intval($formData['PhysicalHealth']);
+    // $formData['Diabetic'] = intval($formData['Diabetic']);
+    // $formData['Diabetic'] = 1;
+    $formData['MentalHealth'] = intval($formData['MentalHealth']);
+    $formData['SleepTime'] = intval($formData['SleepTime']);
     
+    // Determine the age category based on the age
+    $age = intval($formData['Age']);
+    $ageCategory = $this->getAgeCategory($age);
+
+    // Set the age category in the form data
+    $formData['AgeCategory'] = $ageCategory;
+
+    // Remove the age field from the form data
+    unset($formData['Age']);
+    // print_r($formData);
+
+    // Encode the form data as JSON
+    $json_data = json_encode(['input' => $formData]);
+    echo($json_data);
+    // Set the request headers
+    $headers = [
+        'Content-Type' => 'application/json',
+        'Accept' => 'application/json',
+    ];
+
+    // Send the POST request to the API endpoint
+    $client = new Client();
+    $response = $client->post($url, [
+        'headers' => $headers,
+        'body' => $json_data,
+    ]);
+    
+    // Get the response data as an associative array
+    $response_data = json_decode($response->getBody(), true);
+    // dd($response_data);
+    if (array_key_exists('error', $response_data)) {
+        // If there was an error, return the error message
+        return 'Error: ' . $response_data['error'];
+    } else {
+        // Otherwise, check the diagnosis value
+        $diagnosis = $response_data['diagnosis'];
+
+        if (is_array($diagnosis)) {
+            // If the diagnosis is an array, print each value
+            $formData['diagnosis'] = implode(', ', $diagnosis);
+        } else {
+            // Otherwise, store the single value
+            $formData['diagnosis'] = $diagnosis;
+        }
+
+        // Set the updated form data in the session
+        Session::put('formData', $formData);
+
+        // Redirect to the desired route for displaying the form data
+        return redirect()->route('form.showB');
+    }
+}
+
+// Function to determine the age category based on the age
+private function getAgeCategory($age)
+{
+    if ($age >= 80) {
+        return '80 or older';
+    } elseif ($age >= 65 && $age <= 69) {
+        return '65-69';
+    } elseif ($age >= 75 && $age <= 79) {
+        return '75-79';
+    } elseif ($age >= 40 && $age <= 44) {
+        return '40-44';
+    } elseif ($age >= 70 && $age <= 74) {
+        return '70-74';
+    } elseif ($age >= 60 && $age <= 64) {
+        return '60-64';
+    } elseif ($age >= 50 && $age <= 54) {
+        return '50-54';
+    } elseif ($age >= 45 && $age <= 49) {
+        return '45-49';
+    } elseif ($age >= 18 && $age <= 24) {
+        return '18-24';
+    } elseif ($age >= 35 && $age <= 39) {
+        return '35-39';
+    } elseif ($age >= 30 && $age <= 34) {
+        return '30-34';
+    } elseif ($age >= 25 && $age <= 29) {
+        return '25-29';
+    } else {
+        return '18-24';
+        // Handle cases where age does not fall into any defined range
+        return '';
+    }
+}
+
 }
