@@ -29,6 +29,8 @@ $app = require_once __DIR__.'/bootstrap/app.php';
 | or another output device for the developers. Here goes nothing!
 |
 */
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 
